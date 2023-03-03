@@ -4,7 +4,27 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>Network Scanner</Title>
+    <Authors>Yagizhan Necat YAKALI</Authors>
+    <Description>Light weight local network scan library for .Net.</Description>
+    <PackageProjectUrl>https://github.com/yagizhanNY/net-network-scanner</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/yagizhanNY/net-network-scanner</RepositoryUrl>
+    <PackageTags>network, scan, ping</PackageTags>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="IPAddressRange" Version="5.0.0" />
