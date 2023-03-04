@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkScanner", "NetworkSc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkScanner.Sample", "NetworkScanner.Console\NetworkScanner.Sample.csproj", "{0545948E-7328-4DBC-9BA7-FC31B6CAE658}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{7C96D492-A96F-437E-A170-70A07EBA5A14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0545948E-7328-4DBC-9BA7-FC31B6CAE658}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0545948E-7328-4DBC-9BA7-FC31B6CAE658}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0545948E-7328-4DBC-9BA7-FC31B6CAE658}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C96D492-A96F-437E-A170-70A07EBA5A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C96D492-A96F-437E-A170-70A07EBA5A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C96D492-A96F-437E-A170-70A07EBA5A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C96D492-A96F-437E-A170-70A07EBA5A14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

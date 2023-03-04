@@ -22,3 +22,9 @@ var ifaces = NetworkManager.GetAllNetworkInterfaces();
 // Find all available devices
 var availableDevices = await NetworkManager.GetAvailableDevices(ifaces);
 ```
+
+### Features
+
+- Scan the network over IPv4.
+- Getting MAC addresses of devices from arp table.
+- Cross platform support.
