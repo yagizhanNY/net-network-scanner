@@ -1,7 +1,11 @@
 ﻿using NetTools;
 using NetworkScanner.Entities;
+using System.Diagnostics;
 using System.Net;
+using System.Net.Mail;
 using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace NetworkScanner
 {
@@ -70,7 +74,8 @@ namespace NetworkScanner
                             {
                                 availableDevices.Add(new AvailableDevice()
                                 {
-                                    IpAddress = ipAddress.ToString()
+                                    IpAddress = ipAddress.ToString(),
+                                    MacAddress = GetMacAddress(ipAddress.ToString())
                                 });
                             }
                         }
@@ -83,6 +88,40 @@ namespace NetworkScanner
             }
 
             return availableDevices;
+        }
+
+        private static string GetMacAddress(string ipAddress)
+        {
+            using Process process = new();
+
+            string arpCommand = "-a " + ipAddress;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                arpCommand = "-n " + ipAddress;
+            }
+
+            process.StartInfo.FileName = "arp";
+            process.StartInfo.Arguments = arpCommand;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+            string strOutput = process.StandardOutput.ReadToEnd();
+            string[] substrings = strOutput.Split('-');
+            if (substrings.Length >= 8)
+            {
+                string macAddress = substrings[3].Substring(Math.Max(0, substrings[3].Length - 2))
+                         + "-" + substrings[4] + "-" + substrings[5] + "-" + substrings[6]
+                         + "-" + substrings[7] + "-"
+                         + substrings[8].Substring(0, 2);
+                return macAddress;
+            }
+
+            else
+            {
+                return "not found";
+            }
         }
     }
 }
