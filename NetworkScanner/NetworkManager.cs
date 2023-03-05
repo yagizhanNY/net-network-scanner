@@ -2,9 +2,7 @@
 using NetworkScanner.Entities;
 using System.Diagnostics;
 using System.Net;
-using System.Net.Mail;
 using System.Net.NetworkInformation;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace NetworkScanner
@@ -47,14 +45,7 @@ namespace NetworkScanner
             {
                 foreach (var ip in iface.GetIPProperties().UnicastAddresses)
                 {
-                    List<IPAddress> ipAddresses = new();
-
-                    var ipRange = IPAddressRange.Parse(ip.Address.ToString() + "/" + ip.PrefixLength);
-
-                    foreach (var ipAddress in ipRange)
-                    {
-                        ipAddresses.Add(ipAddress);
-                    }
+                    List<IPAddress> ipAddresses = GetIpRange(ip);
 
                     ParallelOptions parallelOptions = new()
                     {
@@ -63,14 +54,13 @@ namespace NetworkScanner
 
                     await Parallel.ForEachAsync(ipAddresses, parallelOptions, async (ipAddress, token) =>
                     {
-                        if(token.IsCancellationRequested) return;
+                        if (token.IsCancellationRequested) return;
 
                         try
                         {
-                            Ping ping = new();
-                            IPStatus status = (await ping.SendPingAsync(ipAddress.ToString(), 1000)).Status;
+                            IPStatus status = await CheckPingStatus(ipAddress);
 
-                            if(status == IPStatus.Success)
+                            if (status == IPStatus.Success)
                             {
                                 availableDevices.Add(new AvailableDevice()
                                 {
@@ -90,24 +80,35 @@ namespace NetworkScanner
             return availableDevices;
         }
 
-        private static string GetMacAddress(string ipAddress)
+        public static async Task<IPStatus> CheckPingStatus(IPAddress ipAddress)
         {
-            using Process process = new();
+            Ping ping = new();
+            IPStatus status = (await ping.SendPingAsync(ipAddress.ToString(), 1000)).Status;
+            return status;
+        }
 
-            string arpCommand = "-a " + ipAddress;
+        public static List<IPAddress> GetIpRange(UnicastIPAddressInformation ip)
+        {
+            List<IPAddress> ipAddresses = new();
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            var ipRange = IPAddressRange.Parse(ip.Address.ToString() + "/" + ip.PrefixLength);
+
+            foreach (var ipAddress in ipRange)
             {
-                arpCommand = "-n " + ipAddress;
+                ipAddresses.Add(ipAddress);
             }
 
-            process.StartInfo.FileName = "arp";
-            process.StartInfo.Arguments = arpCommand;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.CreateNoWindow = true;
-            process.Start();
-            string strOutput = process.StandardOutput.ReadToEnd();
+            return ipAddresses;
+        }
+
+        private static string GetMacAddress(string ipAddress)
+        {
+            SendArpCommand(ipAddress, out string strOutput);
+            return ParseResponse(strOutput);
+        }
+
+        public static string ParseResponse(string strOutput)
+        {
             string[] substrings = strOutput.Split('-');
             if (substrings.Length >= 8)
             {
@@ -122,6 +123,25 @@ namespace NetworkScanner
             {
                 return "not found";
             }
+        }
+
+        public static void SendArpCommand(string ipAddress, out string strOutput)
+        {
+            Process process = new();
+            string arpCommand = "-a " + ipAddress;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                arpCommand = "-n " + ipAddress;
+            }
+
+            process.StartInfo.FileName = "arp";
+            process.StartInfo.Arguments = arpCommand;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+            strOutput = process.StandardOutput.ReadToEnd();
         }
     }
 }
