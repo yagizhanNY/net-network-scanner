@@ -33,10 +33,10 @@ jobs:
         dotnet-version: 7.0.x
 
     - name: Restore dependencies
-      run: dotnet restore ${{ PROJECT_PATH }}
+      run: dotnet restore ${{ env.PROJECT_PATH }}
 
     - name: Build
-      run: dotnet build ${{ PROJECT_PATH }} --no-restore
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore
 
     - name: Test
       run: dotnet test --no-build --verbosity normal
