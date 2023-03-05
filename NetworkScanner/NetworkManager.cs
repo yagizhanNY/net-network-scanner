@@ -104,10 +104,10 @@ namespace NetworkScanner
         private static string GetMacAddress(string ipAddress)
         {
             SendArpCommand(ipAddress, out string strOutput);
-            return ParseResponse(strOutput);
+            return ParseMacCommandResponse(strOutput);
         }
 
-        public static string ParseResponse(string strOutput)
+        public static string ParseMacCommandResponse(string strOutput)
         {
             string[] substrings = strOutput.Split('-');
             if (substrings.Length >= 8)
