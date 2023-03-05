@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkScanner", "NetworkScanner\NetworkScanner.csproj", "{7D868F32-1319-4645-8A93-76485F47EA86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkScanner", "NetworkScanner\NetworkScanner.csproj", "{7D868F32-1319-4645-8A93-76485F47EA86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkScanner.Sample", "NetworkScanner.Console\NetworkScanner.Sample.csproj", "{0545948E-7328-4DBC-9BA7-FC31B6CAE658}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkScanner.Sample", "NetworkScanner.Console\NetworkScanner.Sample.csproj", "{0545948E-7328-4DBC-9BA7-FC31B6CAE658}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{7C96D492-A96F-437E-A170-70A07EBA5A14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkScanner.UnitTest", "NetworkScanner.UnitTest\NetworkScanner.UnitTest.csproj", "{8F8F7544-ED60-4739-9686-D38E795263A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{0545948E-7328-4DBC-9BA7-FC31B6CAE658}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0545948E-7328-4DBC-9BA7-FC31B6CAE658}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0545948E-7328-4DBC-9BA7-FC31B6CAE658}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7C96D492-A96F-437E-A170-70A07EBA5A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C96D492-A96F-437E-A170-70A07EBA5A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C96D492-A96F-437E-A170-70A07EBA5A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C96D492-A96F-437E-A170-70A07EBA5A14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F8F7544-ED60-4739-9686-D38E795263A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F8F7544-ED60-4739-9686-D38E795263A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F8F7544-ED60-4739-9686-D38E795263A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F8F7544-ED60-4739-9686-D38E795263A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -80,14 +80,14 @@ namespace NetworkScanner
             return availableDevices;
         }
 
-        public static async Task<IPStatus> CheckPingStatus(IPAddress ipAddress)
+        private static async Task<IPStatus> CheckPingStatus(IPAddress ipAddress)
         {
             Ping ping = new();
             IPStatus status = (await ping.SendPingAsync(ipAddress.ToString(), 1000)).Status;
             return status;
         }
 
-        public static List<IPAddress> GetIpRange(UnicastIPAddressInformation ip)
+        private static List<IPAddress> GetIpRange(UnicastIPAddressInformation ip)
         {
             List<IPAddress> ipAddresses = new();
 
