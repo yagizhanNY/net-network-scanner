@@ -32,21 +32,21 @@ jobs:
       with:
         dotnet-version: 7.0.x
 
-    - name: Restore dependencies
+    - name: Restore Dependencies
       run: dotnet restore ${{ env.PROJECT_PATH }}
 
-    - name: Build
+    - name: Build Project
       run: dotnet build ${{ env.PROJECT_PATH }} --no-restore
 
-    - name: Test
+    - name: Run Tests
       run: dotnet test --no-build --verbosity normal
 
     - name: 'Get Version'
       id: version
       uses: battila7/get-version-action@v2
 
-    - name: 'Pack project'
+    - name: 'Pack Project'
       run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
     
-    - name: 'Push package'
+    - name: 'Push Package'
       run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }}
