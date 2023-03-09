@@ -1,8 +1,10 @@
 ﻿using NetTools;
 using NetworkScanner.Entities;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 
 namespace NetworkScanner
@@ -38,7 +40,7 @@ namespace NetworkScanner
             });
         }
 
-        public static async Task<IEnumerable<AvailableDevice>> GetAvailableDevices(IEnumerable<NetworkInterface> networkInterfaces)
+        public static async Task<IEnumerable<AvailableDevice>> GetAvailableDevices(IEnumerable<NetworkInterface> networkInterfaces, int? port = null)
         {
             List<AvailableDevice> availableDevices = new();
             foreach (var iface in networkInterfaces)
@@ -62,11 +64,20 @@ namespace NetworkScanner
 
                             if (status == IPStatus.Success)
                             {
-                                availableDevices.Add(new AvailableDevice()
+                                if(!port.HasValue)
                                 {
-                                    IpAddress = ipAddress.ToString(),
-                                    MacAddress = GetMacAddress(ipAddress.ToString())
-                                });
+                                    AddDeviceToList(ipAddress, availableDevices);
+                                }
+                                else
+                                {
+                                    bool isPortAvailable = await IsPortAvailable(ipAddress.ToString(), (int)port);
+
+                                    if(isPortAvailable)
+                                    {
+                                        AddDeviceToList(ipAddress, availableDevices);
+                                    }
+                                }
+
                             }
                         }
                         catch
@@ -78,6 +89,15 @@ namespace NetworkScanner
             }
 
             return availableDevices;
+        }
+
+        private static void AddDeviceToList(IPAddress ipAddress, List<AvailableDevice> availableDevices)
+        {
+            availableDevices.Add(new AvailableDevice()
+            {
+                IpAddress = ipAddress.ToString(),
+                MacAddress = GetMacAddress(ipAddress.ToString())
+            });
         }
 
         private static async Task<IPStatus> CheckPingStatus(IPAddress ipAddress)
@@ -142,6 +162,22 @@ namespace NetworkScanner
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             strOutput = process.StandardOutput.ReadToEnd();
+        }
+
+        private static async Task<bool> IsPortAvailable(string ipAddress, int port)
+        {
+            using TcpClient tcpClient = new();
+            try
+            {
+                await tcpClient.ConnectAsync(ipAddress, port);
+                tcpClient.Close();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
